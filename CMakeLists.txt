@@ -10,7 +10,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)# Shared lib
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)# executables
 
 #Library used
-set(LIBS ssl crypto jansson check m pthread rt subunit)
+set(LIBS ssl crypto jansson check m pthread rt)
 
 add_definitions(-DUSE_CMAKE)
 
