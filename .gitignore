@@ -35,3 +35,7 @@ Makefile
 !/m4/gcov.m4
 /doxygen-doc/*
 /libjwt/libjwt.pc
+
+.idea/
+bin/
+lib/
