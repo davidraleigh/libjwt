@@ -47,7 +47,7 @@ endif()
 if (APPLE)
     install(FILES include/jwt.h DESTINATION "/usr/local/include")
 else()
-    install(FILES include/jwt.h DESTINATION "/usr/include/jwt")
+    install(FILES include/jwt.h DESTINATION "/usr/include")
 endif()
 
 
