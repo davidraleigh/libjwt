@@ -23,6 +23,7 @@ set(INCLUDE_DIR include)
 if (APPLE)
     set(INCLUDE_DIR ${INCLUDE_DIR} /usr/local/opt/openssl/include)
 endif()
+
 include_directories(${INCLUDE_DIR})
 
 add_library(${LIBRARY_NAME} SHARED libjwt/jwt.c)
@@ -31,12 +32,24 @@ set_target_properties(${LIBRARY_NAME}_static PROPERTIES OUTPUT_NAME ${LIBRARY_NA
 
 target_link_libraries(${LIBRARY_NAME} ${LIBS})
 
-install(TARGETS ${LIBRARY_NAME} ${LIBRARY_NAME}_static
-        LIBRARY DESTINATION /usr/lib
-        ARCHIVE DESTINATION /usr/lib
-        OPTIONAL)
+if (APPLE)
+    install(TARGETS ${LIBRARY_NAME} ${LIBRARY_NAME}_static
+            LIBRARY DESTINATION /usr/local/lib
+            ARCHIVE DESTINATION /usr/local/lib
+            OPTIONAL)
+else()
+    install(TARGETS ${LIBRARY_NAME} ${LIBRARY_NAME}_static
+            LIBRARY DESTINATION /usr/lib
+            ARCHIVE DESTINATION /usr/lib
+            OPTIONAL)
+endif()
 
-install(FILES include/jwt.h DESTINATION "/usr/include/jwt")
+if (APPLE)
+    install(FILES include/jwt.h DESTINATION "/usr/local/include")
+else()
+    install(FILES include/jwt.h DESTINATION "/usr/include/jwt")
+endif()
+
 
 enable_testing()
 add_custom_target(tests COMMAND ${CMAKE_CTEST_COMMAND} OPTIONAL)
@@ -53,7 +66,6 @@ InitialiseTest(jwt_encode tests/jwt_encode.c)
 InitialiseTest(jwt_grant tests/jwt_grant.c)
 InitialiseTest(jwt_new tests/jwt_new.c)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(SOURCE_FILES tests/main.c)
 add_executable(main ${SOURCE_FILES})
-target_link_libraries(main ${LIBS} ${LIBRARY_NAME})
+target_link_libraries(main ${LIBS} ${LIBRARY_NAME} curl)
